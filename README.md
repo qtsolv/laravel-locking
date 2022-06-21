@@ -26,7 +26,10 @@ In your migration classes, add the version column to your table as below:
 public function up()
 {
     Schema::table('blog_posts', function (Blueprint $table) {
+        // create column for version tracking i.e., lock_version
         $table->lockVersion();
+        // or to use a custom column name e.g., version
+        $table->lockVersion('version');
     });
 }
 
@@ -38,7 +41,7 @@ public function up()
 public function down()
 {
     Schema::table('blog_posts', function (Blueprint $table) {
-        $table->dropLockVersion();
+        $table->dropLockVersion(); // or $table->dropLockVersion('version');
     });
 }
 ```
@@ -54,6 +57,14 @@ use Quarks\Laravel\Locking\LocksVersion;
 class BlogPost extends Authenticatable
 {
     use LocksVersion;
+    
+    /**
+     * Override the default lock version column name, optional.
+     */
+    protected static function lockVersionColumnName()
+    {
+        return 'lock_version'; // or return 'version'; etc.
+    }
 }
 ```
 
@@ -86,6 +97,7 @@ class BlogPostController extends Controller
         $data = $request->validated();
         $blogPost->fill($data);
         $blogPost->fillLockVersion();
+
         try {
             $blogPost->save();
         } catch (LockedVersionMismatchException $e) {
