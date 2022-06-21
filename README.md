@@ -51,10 +51,10 @@ Then add the `LocksVersion` trait your model classes as follows:
 ```php
 namespace App\Models;
 
-use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Database\Eloquent\Model;
 use Quarks\Laravel\Locking\LocksVersion;
 
-class BlogPost extends Authenticatable
+class BlogPost extends Model
 {
     use LocksVersion;
     
