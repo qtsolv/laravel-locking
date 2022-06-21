@@ -49,7 +49,7 @@ Then add the `LocksVersion` trait your model classes as follows:
 namespace App\Models;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Quarks\Laravel\Auditors\HasAuditors;
+use Quarks\Laravel\Locking\LocksVersion;
 
 class BlogPost extends Authenticatable
 {
@@ -78,6 +78,9 @@ use Quarks\Laravel\Locking\LockedVersionMismatchException;
 
 class BlogPostController extends Controller
 {
+
+    // ... more methods
+
     public function update(BlogPost $blogPost, BlogPostRequest $request)
     {
         $data = $request->validated();
