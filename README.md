@@ -15,7 +15,7 @@ composer require quarks/laravel-locking
 
 ### Usage
 
-In your migration classes, add the auditor columns to your table as below:
+In your migration classes, add the version column to your table as below:
 
 ```php
 /**
