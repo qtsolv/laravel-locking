@@ -26,10 +26,10 @@ In your migration classes, add the version column to your table as below:
 public function up()
 {
     Schema::table('blog_posts', function (Blueprint $table) {
-        // create column for version tracking i.e., lock_version
+        // create column for version tracking
         $table->lockVersion();
-        // or to use a custom column name e.g., version
-        $table->lockVersion('version');
+        // or to use a custom column name e.g., lock_version
+        $table->lockVersion('lock_version');
     });
 }
 
@@ -41,7 +41,7 @@ public function up()
 public function down()
 {
     Schema::table('blog_posts', function (Blueprint $table) {
-        $table->dropLockVersion(); // or $table->dropLockVersion('version');
+        $table->dropLockVersion(); // or $table->dropLockVersion('lock_version');
     });
 }
 ```
@@ -63,12 +63,12 @@ class BlogPost extends Model
      */
     protected static function lockVersionColumnName()
     {
-        return 'lock_version'; // or return 'version'; etc.
+        return 'lock_version';
     }
 }
 ```
 
-In your blade templates, include the current lock version as part of the form using the `lockVersion` directive as below:
+In your blade templates, include the current lock version as part of the form using the `lockInput` directive as below:
 
 ```html
 <form method="post">
@@ -101,7 +101,7 @@ class BlogPostController extends Controller
         try {
             $blogPost->save();
         } catch (LockedVersionMismatchException $e) {
-            abort(409);
+            abort(409, 'This model was already modified elsewhere.');
         }
     }
 }
