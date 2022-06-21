@@ -35,8 +35,18 @@ class LockingServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        Blade::directive('lockInput', function (Model $model, $columnName = 'lock_version') {
-            return sprintf('<input type="hidden" name="%s" value="%s">', $columnName, $model->{$columnName});
+        Blade::directive('lockInput', function (Model $model) {
+            $valid = in_array(LocksVersion::class, class_uses_recursive($model), true);
+            if (!$valid) {
+                throw new \RuntimeException(
+                    sprintf('%s does not use %s trait.', get_class($model), LocksVersion::class)
+                );
+            }
+
+            /** @var LocksVersion $model */
+            $fieldName = call_user_func(get_class($model), 'lockVersionColumnName');
+            $fieldValue = $model->currentLockVersion();
+            return sprintf('<input type="hidden" name="%s" value="%s">', $fieldName, $fieldValue);
         });
     }
 }
