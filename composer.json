@@ -1,0 +1,34 @@
+{
+    "authors": [
+        {
+            "name": "Vaibhav Pandey",
+            "email": "vaibhav.pandey@qtsolv.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Quarks\\Laravel\\Locking\\": "src/"
+        }
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "description": "Easily implement optimistic Eloquent model locking feature to your Laravel app.",
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Quarks\\Laravel\\Locking\\LockingServiceProvider"
+            ]
+        }
+    },
+    "license": "MIT",
+    "name": "quarks/laravel-locking",
+    "prefer-stable": true,
+    "require": {
+        "php": ">=7.2"
+    },
+    "require-dev": {
+        "laravel/framework": "^6.0 || ^7.0 || ^8.0"
+    },
+    "type": "library"
+}
