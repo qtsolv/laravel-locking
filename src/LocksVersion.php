@@ -21,8 +21,6 @@ trait LocksVersion
             if ($model->currentLockVersion() === null) {
                 $model->{static::lockVersionColumnName()} = 1;
             }
-
-            return $model;
         });
     }
 
